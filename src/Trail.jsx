@@ -1,47 +1,15 @@
- import React from 'react'
- import { useState } from 'react'
- 
- const App = () => {
-  const [todo, setTodo] = useState('');
-  const [taskList, setTaskList] = useState([]);
+const handleMoveTask = (currentColumnId, targetColumnId, taskToMove) => {
+     const updatedColumn = columns.map((col) => {
+        if(col.id === targetColumnId) {
 
-  const handleChange = (e) => {
-      setTodo(e.target.value);
-  }
-  const handleSubmit = () => {
-      setTaskList([...taskList, todo]);
-      setTodo('');
-      console.log(taskList);
-  }
-
-  function handleDelete(index) {
-      const newList = [...taskList];
-      newList.splice(index, 1);
-      setTaskList(newList);
-  }
-   return (
-     <div>
-      <h1>Unified Board</h1>
-      <input
-      type='text'
-      placeholder='Enter task'
-      value={todo}
-      onChange={handleChange}
-      />
-      <button onClick={handleSubmit}>Add Task</button>
-      <ul>
-        {
-          taskList.map((task, index) =>(
-            <>
-             <li key={index}>{task}</li>
-            <button onClick={() => handleDelete(index)}>Delete</button>
-            </>
-          ))
+            //we need to return new { object }
+            return {...col, tasks: [...col.tasks, taskToMove]}
         }
-
-      </ul>
-      </div>
-   )
- }
- 
- export default App
+        if(col.id === currentColumnId) {
+            
+            return {
+                ...col, 
+                tasks: col.tasks.filter((tak) => tak.id !== taskToMove.id  )}
+        }
+     })
+}
